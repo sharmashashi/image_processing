@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:meta/meta.dart';
 
 /// Class that is valid only for 8 bit
 /// uncompressed bitmap images with endianness
@@ -26,15 +27,32 @@ class U8Bitmap {
   ///width and height of bitmap image in pixel
   int imageWidth, imageHeight;
 
-  U8Bitmap(this._imagePath) {
-    _rawBytes = File(_imagePath).readAsBytesSync();
+  U8Bitmap([this._imagePath]) {
+    if (_imagePath != null) {
+      _rawBytes = File(_imagePath).readAsBytesSync();
 
-    fileSize = _findFileSize();
-    _offsetToPixel = _findOffsetToPixel();
-    _headerBytes = _findHeaderBytes();
-    imageHeight = _findImageHeight();
-    imageWidth = _findImageWidth();
-    _bpp = _bytesToValue(_rawBytes.sublist(28, 30));
+    }
+  }
+
+  ///if imagepath is not given while
+  ///instantiating init() method can
+  ///be called with image raw bytes
+  ///argument
+  init({@required  rawBytes}) {
+    this._rawBytes = rawBytes;
+    _setProperties();
+  }
+
+  ///this method sets the image properties
+  ///to its related variables
+  _setProperties(){
+
+      fileSize = _findFileSize();
+      _offsetToPixel = _findOffsetToPixel();
+      _headerBytes = _findHeaderBytes();
+      imageHeight = _findImageHeight();
+      imageWidth = _findImageWidth();
+      _bpp = _bytesToValue(_rawBytes.sublist(28, 30));
   }
 
   ///getter for bits per pixel

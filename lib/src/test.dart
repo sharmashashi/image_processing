@@ -1,5 +1,4 @@
 import 'core/intensity_transformations.dart';
-import 'core/spatialFiltering.dart';
 import 'core/u8bitmap.dart';
 
 void main() {
