@@ -22,15 +22,14 @@ class U8Bitmap {
   int _bpp;
 
   ///size of bitmap file in bytes
-  int fileSize;
+  int _fileSize;
 
   ///width and height of bitmap image in pixel
-  int imageWidth, imageHeight;
+  int _imageWidth, _imageHeight;
 
   U8Bitmap([this._imagePath]) {
     if (_imagePath != null) {
       _rawBytes = File(_imagePath).readAsBytesSync();
-
     }
   }
 
@@ -38,25 +37,42 @@ class U8Bitmap {
   ///instantiating init() method can
   ///be called with image raw bytes
   ///argument
-  init({@required  rawBytes}) {
+  init({@required rawBytes}) {
     this._rawBytes = rawBytes;
     _setProperties();
   }
 
   ///this method sets the image properties
   ///to its related variables
-  _setProperties(){
-
-      fileSize = _findFileSize();
-      _offsetToPixel = _findOffsetToPixel();
-      _headerBytes = _findHeaderBytes();
-      imageHeight = _findImageHeight();
-      imageWidth = _findImageWidth();
-      _bpp = _bytesToValue(_rawBytes.sublist(28, 30));
+  _setProperties() {
+    _fileSize = _findFileSize();
+    _offsetToPixel = _findOffsetToPixel();
+    _headerBytes = _findHeaderBytes();
+    _imageHeight = _findImageHeight();
+    _imageWidth = _findImageWidth();
+    _bpp = _bytesToValue(_rawBytes.sublist(28, 30));
   }
 
   ///getter for bits per pixel
   get bitsPerPixel => _bpp;
+
+  ///getter for header bytes
+  get headerBytes => _headerBytes;
+
+  ///getter for raw bytes
+  get rawBytes => _rawBytes;
+
+  ///getter for image height
+  get imageHeight => _imageHeight;
+
+  ///getter for imageWidth
+  get imageWidth => _imageWidth;
+
+  ///getter for fileSize
+  get fileSize => _fileSize;
+
+  ///getter for offset to pixel
+  get offsetToPixel => _offsetToPixel;
 
   ///finds header bytes
   _findHeaderBytes() => _rawBytes.sublist(0, _offsetToPixel);
@@ -105,13 +121,13 @@ class U8Bitmap {
 
   ///- returns image pixels in the form of list
   List<List<int>> imread() {
-    List<List<int>> pixelMat = List<List<int>>(imageHeight);
+    List<List<int>> pixelMat = List<List<int>>(_imageHeight);
     List<int> rowColumn = _rawBytes.sublist(
-        _offsetToPixel, _offsetToPixel + (imageHeight * imageWidth));
+        _offsetToPixel, _offsetToPixel + (_imageHeight * _imageWidth));
     int commonIndex = 0;
-    for (int height = imageHeight - 1; height >= 0; height--) {
-      List<int> tempList = List<int>(imageWidth);
-      for (int width = 0; width < imageWidth; width++) {
+    for (int height = _imageHeight - 1; height >= 0; height--) {
+      List<int> tempList = List<int>(_imageWidth);
+      for (int width = 0; width < _imageWidth; width++) {
         tempList[width] = rowColumn[commonIndex];
         commonIndex++;
       }
@@ -124,14 +140,14 @@ class U8Bitmap {
   ///   in the form of bitmap
   imwrite(String imageName, List<List<int>> image) {
     List<int> finalImage = List();
-    List<List<int>> tempList = List(imageWidth);
+    List<List<int>> tempList = List(_imageWidth);
     int indexCounter = 0;
-    for (int height = imageHeight - 1; height >= 0; height--) {
+    for (int height = _imageHeight - 1; height >= 0; height--) {
       tempList[indexCounter] = image[height];
       indexCounter++;
     }
-    for (int i = 0; i < imageHeight; i++) {
-      for (int j = 0; j < imageWidth; j++) {
+    for (int i = 0; i < _imageHeight; i++) {
+      for (int j = 0; j < _imageWidth; j++) {
         finalImage.add(tempList[i][j]);
       }
     }
