@@ -1,6 +1,6 @@
 name: dart_image_processing
-description: A new Flutter package in Image Processing.
-version: 0.0.2
+description: A Flutter package in Image Processing. It provides basic features like image blurring and other transformation for bitmap image for now. All the calculations are performed in pure dart.
+version: 0.0.3
 author: Shashi Sharma <sharmashashi940@gmail.com>
 homepage: https://github.com/sharmashashi/image_processing
 
