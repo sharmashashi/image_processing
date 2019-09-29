@@ -30,6 +30,7 @@ class U8Bitmap {
   U8Bitmap([this._imagePath]) {
     if (_imagePath != null) {
       _rawBytes = File(_imagePath).readAsBytesSync();
+      _setProperties();
     }
   }
 
