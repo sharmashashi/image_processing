@@ -1,8 +1,8 @@
 name: dart_image_processing
 description: A new Flutter package in Image Processing.
 version: 0.0.1
-author:
-homepage:
+author: Shashi Sharma <sharmashashi940@gmail.com>
+homepage: https://github.com/sharmashashi/image_processing
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
